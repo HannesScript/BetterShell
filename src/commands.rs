@@ -2,7 +2,6 @@ use std::fs;
 use std::env;
 use std::str;
 use std::process;
-use std::os::unix::process::CommandExt;
 use std::path::*;
 
 pub fn command_not_found(command: &str) {
