@@ -87,27 +87,25 @@ pub fn execute_external_program(command: &str, args: Vec<&str>) {
                 let permissions = meta.permissions();               
                 let mode = permissions.mode();                      
                 if mode & 0o111 != 0 {                              
-                    elem_found_at = full_path;        
+                    elem_found_at = full_path;
+                    break;
                 }                                                  
             }                                                       
         }                                                           
     }
 
     if elem_found_at != "" {
-        // Execute the program
-        let output = process::Command::new(&elem_found_at)
-            .arg0(command)
-            .args(&args)
-            .current_dir(env::current_dir().unwrap_or_default())
-            .output()
-            .expect("Failed to execute command");
-
-        if output.status.success() {
-            print!("{}", String::from_utf8_lossy(&output.stdout));
-        } else {
-            eprint!("{}", String::from_utf8_lossy(&output.stderr));
+        // Execute the program and wait for it to finish
+        let mut cmd = process::Command::new(&elem_found_at);
+        cmd.args(&args)
+            .current_dir(env::current_dir().unwrap_or_default());
+        
+        match cmd.spawn() {
+            Ok(mut child) => {
+                let _ = child.wait();
+            },
+            Err(_) => command_not_found(command),
         }
-
         return;
     }
 

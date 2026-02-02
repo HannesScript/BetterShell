@@ -11,7 +11,7 @@ fn main() {
 
 fn read_eval_print_cycle() {
     // Print the iconic shell prompt
-    print!("$ ");
+    print!("TODO (USER) : {} $ ", std::env::current_dir().unwrap_or_default().to_string_lossy());
     io::stdout().flush().unwrap();
 
     let mut input = String::new(); // Initialize the input variable
