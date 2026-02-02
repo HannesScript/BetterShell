@@ -9,4 +9,9 @@ We are happy to welcome anybody! :)
 
 It is best to try and implement something from the TODOS.md file. Of course you are still welcome to add more todos to the file.
 
+## Building/Compiling and Usage
+
+Building is done via the `cargo build` command. To also run the program: just use `cargo run`.
+You can use Better Shell like any other shell. Of course it's a little bit buggy right now, but that will get fixed as this project grows.
+
 # Have fun! :)
