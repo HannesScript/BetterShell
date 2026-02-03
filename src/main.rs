@@ -1,6 +1,6 @@
 #[allow(unused_imports)]
 use std::io::{self, Write};
-mod commands; // this line includes commands.rs
+use bettershell::commands; // Use the library module
 
 fn main() {
     // Just loops the REPL (read-evaluate-print loop)

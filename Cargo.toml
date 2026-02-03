@@ -5,6 +5,14 @@ authors = ["HannesScript <mail@hannesscript.dev>"]
 edition = "2024"
 rust-version = "1.91"
 
+[lib]
+name = "bettershell"
+path = "src/lib.rs"
+
+[[bin]]
+name = "bettershell"
+path = "src/main.rs"
+
 [dependencies]
 anyhow = "1.0.68"                                # error handling
 bytes = "1.3.0"                                  # helps manage buffers
