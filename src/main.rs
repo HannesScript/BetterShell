@@ -1,6 +1,6 @@
+use bettershell::commands;
 #[allow(unused_imports)]
-use std::io::{self, Write};
-use bettershell::commands; // Use the library module
+use std::io::{self, Write}; // Use the library module
 
 fn main() {
     // Just loops the REPL (read-evaluate-print loop)
@@ -11,7 +11,12 @@ fn main() {
 
 fn read_eval_print_cycle() {
     // Print the iconic shell prompt
-    print!("TODO (USER) : {} $ ", std::env::current_dir().unwrap_or_default().to_string_lossy());
+    print!(
+        "TODO (USER) : {} $ ",
+        std::env::current_dir()
+            .unwrap_or_default()
+            .to_string_lossy()
+    );
     io::stdout().flush().unwrap();
 
     let mut input = String::new(); // Initialize the input variable
@@ -21,10 +26,7 @@ fn read_eval_print_cycle() {
     let input: &str = input.trim();
 
     // Split by white spaces
-    let mut input_split: Vec<String> = input
-        .split_whitespace()
-        .map(|s| s.to_string())
-        .collect();
+    let mut input_split: Vec<String> = input.split_whitespace().map(|s| s.to_string()).collect();
 
     // Quotation logic
     let quotes = ["\"", "'"];
@@ -61,7 +63,7 @@ fn read_eval_print_cycle() {
                 }
             }
         }
-        
+
         // and the last element
         if let Some(index) = end_item_index {
             if let Some(element) = input_split.get_mut(index) {

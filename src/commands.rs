@@ -1,8 +1,8 @@
-use std::fs;
 use std::env;
-use std::str;
-use std::process;
+use std::fs;
 use std::path::*;
+use std::process;
+use std::str;
 
 pub fn command_not_found(command: &str) {
     // Called when the command doesn't exist
@@ -10,9 +10,8 @@ pub fn command_not_found(command: &str) {
     return;
 }
 
-
 pub fn handle_type(args: Vec<&str>) {
-    let cmd: &str = args[0];   
+    let cmd: &str = args[0];
 
     match cmd {
         // "" => println!(""),
@@ -31,22 +30,22 @@ fn type_non_builtin(cmd: &str) {
 
     let elem_found_at: String = String::new();
 
-    for folder in path_split {                                      
-        let full_path = format!("{}/{}", folder, cmd);              
-        let path_obj = std::path::Path::new(&full_path);            
-                                                                    
-        if path_obj.exists() {                                      
-            use std::os::unix::fs::PermissionsExt;                  
-            let metadata = fs::metadata(&full_path);                
-            if let Ok(meta) = metadata {                            
-                let permissions = meta.permissions();               
-                let mode = permissions.mode();                      
-                if mode & 0o111 != 0 {                              
-                    println!("{} is {}", cmd, full_path);           
-                    return;                                         
-                }                                                  
-            }                                                       
-        }                                                           
+    for folder in path_split {
+        let full_path = format!("{}/{}", folder, cmd);
+        let path_obj = std::path::Path::new(&full_path);
+
+        if path_obj.exists() {
+            use std::os::unix::fs::PermissionsExt;
+            let metadata = fs::metadata(&full_path);
+            if let Ok(meta) = metadata {
+                let permissions = meta.permissions();
+                let mode = permissions.mode();
+                if mode & 0o111 != 0 {
+                    println!("{} is {}", cmd, full_path);
+                    return;
+                }
+            }
+        }
     }
 
     if elem_found_at != "" {
@@ -56,7 +55,6 @@ fn type_non_builtin(cmd: &str) {
 
     println!("{}: not found", cmd)
 }
-
 
 pub fn handle_exit() {
     process::exit(0); // exit
@@ -75,22 +73,22 @@ pub fn execute_external_program(command: &str, args: Vec<&str>) {
 
     let mut elem_found_at: String = String::new();
 
-    for folder in path_split {                                      
-        let full_path = format!("{}/{}", folder, command);              
-        let path_obj = std::path::Path::new(&full_path);            
-                                                                    
-        if path_obj.exists() {                                      
-            use std::os::unix::fs::PermissionsExt;                  
-            let metadata = fs::metadata(&full_path);                
-            if let Ok(meta) = metadata {                            
-                let permissions = meta.permissions();               
-                let mode = permissions.mode();                      
-                if mode & 0o111 != 0 {                              
+    for folder in path_split {
+        let full_path = format!("{}/{}", folder, command);
+        let path_obj = std::path::Path::new(&full_path);
+
+        if path_obj.exists() {
+            use std::os::unix::fs::PermissionsExt;
+            let metadata = fs::metadata(&full_path);
+            if let Ok(meta) = metadata {
+                let permissions = meta.permissions();
+                let mode = permissions.mode();
+                if mode & 0o111 != 0 {
                     elem_found_at = full_path;
                     break;
-                }                                                  
-            }                                                       
-        }                                                           
+                }
+            }
+        }
     }
 
     if elem_found_at != "" {
@@ -98,11 +96,11 @@ pub fn execute_external_program(command: &str, args: Vec<&str>) {
         let mut cmd = process::Command::new(&elem_found_at);
         cmd.args(&args)
             .current_dir(env::current_dir().unwrap_or_default());
-        
+
         match cmd.spawn() {
             Ok(mut child) => {
                 let _ = child.wait();
-            },
+            }
             Err(_) => command_not_found(command),
         }
         return;

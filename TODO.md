@@ -1,7 +1,7 @@
 - [X] support for single quotes
 - [X] support for double quotes
 - [ ] Backslashes outside quotes
-- [ ] Backslashes withing single and double quotes
+- [ ] Backslashes within single and double quotes
 - [ ] Execution of a quoted executable
 
 - [ ] Redirection of stdout and stderr
@@ -12,8 +12,8 @@
 - [ ] Multi-command pipelines
   
 - [ ] Completion of built-ins
-- [ ] completion with arguments
-- [ ] missing completions
-- [ ] executable completions
-- [ ] partial completions
-- [ ] multiple completions
+- [ ] Completion with arguments
+- [ ] Missing completions
+- [ ] Executable completions
+- [ ] Partial completions
+- [ ] Multiple completions

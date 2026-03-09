@@ -14,6 +14,6 @@ name = "bettershell"
 path = "src/main.rs"
 
 [dependencies]
-anyhow = "1.0.68"                                # error handling
-bytes = "1.3.0"                                  # helps manage buffers
+anyhow = "1.0.102"                                # error handling
+bytes = "1.11.1"                                  # helps manage buffers
 thiserror = "2.0.18"                             # error handling
