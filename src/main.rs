@@ -25,52 +25,8 @@ fn read_eval_print_cycle() {
     // Trim the input to remove newline characters
     let input: &str = input.trim();
 
-    // Split by white spaces
-    let mut input_split: Vec<String> = input.split_whitespace().map(|s| s.to_string()).collect();
-
-    // Quotation logic
-    let quotes = ["\"", "'"];
-    let mut start_item_index: Option<usize> = None;
-    let mut end_item_index: Option<usize> = None;
-    let mut QUOTE_TYPE: Option<&str> = None;
-
-    // First pass: find start
-    for (index, element) in input.split_whitespace().enumerate() {
-        if let Some(quote) = quotes.iter().find(|&&q| element.starts_with(q)) {
-            start_item_index = Some(index);
-            QUOTE_TYPE = Some(quote);
-            break;
-        }
-    }
-
-    // Only continue if we have found a quote
-    if "" != QUOTE_TYPE.unwrap_or_default() {
-        // Second pass: find end (create new iterator)
-        for (index, element) in input.split_whitespace().enumerate() {
-            if let Some(quote) = quotes.iter().find(|&&q| element.ends_with(q)) {
-                end_item_index = Some(index);
-                if QUOTE_TYPE == Some(quote) {
-                    break;
-                }
-            }
-        }
-
-        // Remove the quotes and combine the elements to one
-        if let Some(index) = start_item_index {
-            if let Some(element) = input_split.get_mut(index) {
-                if let Some(first_char) = element.chars().next() {
-                    *element = (&element[first_char.len_utf8()..]).to_string();
-                }
-            }
-        }
-
-        // and the last element
-        if let Some(index) = end_item_index {
-            if let Some(element) = input_split.get_mut(index) {
-                element.pop(); // removes the last char
-            }
-        }
-    }
+    // Split by white spaces while preserving quoted segments
+    let input_split: Vec<String> = split_input_preserving_quotes(input);
 
     // Get first element (command)
     let command: &str = input_split.get(0).map(|s| s.as_str()).unwrap_or("");
@@ -79,6 +35,38 @@ fn read_eval_print_cycle() {
 
     // match the commands
     command_matcher(command, args);
+}
+
+fn split_input_preserving_quotes(input: &str) -> Vec<String> {
+    let mut parts: Vec<String> = Vec::new();
+    let mut current = String::new();
+    let mut in_quote: Option<char> = None;
+
+    for ch in input.chars() {
+        match ch {
+            '"' | '\'' => {
+                if in_quote == Some(ch) {
+                    in_quote = None;
+                } else if in_quote.is_none() {
+                    in_quote = Some(ch);
+                } else {
+                    current.push(ch);
+                }
+            }
+            c if c.is_whitespace() && in_quote.is_none() => {
+                if !current.is_empty() {
+                    parts.push(std::mem::take(&mut current));
+                }
+            }
+            _ => current.push(ch),
+        }
+    }
+
+    if !current.is_empty() {
+        parts.push(current);
+    }
+
+    parts
 }
 
 /**
