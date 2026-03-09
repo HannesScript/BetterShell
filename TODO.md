@@ -1,5 +1,5 @@
-- [ ] support for single quotes
-- [ ] support for double quotes
+- [X] support for single quotes
+- [X] support for double quotes
 - [ ] Backslashes outside quotes
 - [ ] Backslashes withing single and double quotes
 - [ ] Execution of a quoted executable
